@@ -98,10 +98,10 @@ stages:
     displayName: 'Script database schema changes'
     dependsOn: Build
     jobs:
-      - deployment: DBAVerificationScript
-        pool:
-          vmImage: 'windows-2019'
-        variables:
+    - deployment: DBAVerificationScript
+      pool:
+        vmImage: 'windows-2019'
+      variables:
       - group: 'Release'
       environment: 'dbaverificationscript'
       strategy:
