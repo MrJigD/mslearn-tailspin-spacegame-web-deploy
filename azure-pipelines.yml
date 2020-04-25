@@ -1,6 +1,6 @@
 trigger:
   - '*'
-  sdkjlsfd
+        
 variables:
     buildConfiguration: 'Release'
   
