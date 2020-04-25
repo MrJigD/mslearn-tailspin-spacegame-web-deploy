@@ -1,6 +1,6 @@
 trigger:
   - '*'
-        
+
 variables:
     buildConfiguration: 'Release'
   
@@ -95,9 +95,9 @@ stages:
         condition: succeededOrFailed()
   
 - stage: DBAVerificationScript
-    displayName: 'Script database schema changes'
-    dependsOn: Build
-    jobs:
+  displayName: 'Script database schema changes'
+  dependsOn: Build
+  jobs:
   - deployment: DBAVerificationScript
       pool:
         vmImage: 'windows-2019'
