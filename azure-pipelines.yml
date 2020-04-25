@@ -2,7 +2,7 @@ trigger:
   - '*'
 
 variables:
-  buildConfiguration: 'Releases'
+  buildConfiguration: 'Releasemeskfklsjdlfjsld'
   
 stages:
   - stage: 'Build'
@@ -195,19 +195,19 @@ stages:
       vmImage: 'ubuntu-16.04'
      environment: test
      variables:
-      - group: 'Release'
+     - group: 'Release'
      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - download: current
-              artifact: drop
-            - task: AzureWebApp@1
-              displayName: 'Azure App Service Deploy: website'
-              inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
-                appName: '$(WebAppNameTest)'
-                package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+       runOnce:
+         deploy:
+           steps:
+           - download: current
+             artifact: drop
+           - task: AzureWebApp@1
+             displayName: 'Azure App Service Deploy: website'
+             inputs:
+               azureSubscription: 'Resource Manager - Tailspin - Space Game'
+               appName: '$(WebAppNameTest)'
+               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
   
  - stage: 'Staging'
    displayName: 'Deploy to the staging environment'
