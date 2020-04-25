@@ -2,7 +2,7 @@ trigger:
   - '*'
 
 variables:
-    buildConfiguration: 'Releasesonyourfaces'
+    buildConfiguration: 'Releases'
   
 stages:
   - stage: 'Build'
@@ -94,14 +94,14 @@ stages:
           artifactName: dropDacpac
         condition: succeededOrFailed()
   
-- stage: DBAVerificationScript
-  displayName: 'Script database schema changes'
-  dependsOn: Build
-  jobs:
-  - deployment: DBAVerificationScript
-      pool:
-        vmImage: 'windows-2019'
-      variables:
+  - stage: DBAVerificationScript
+    displayName: 'Script database schema changes'
+    dependsOn: Build
+    jobs:
+      - deployment: DBAVerificationScript
+        pool:
+          vmImage: 'windows-2019'
+        variables:
       - group: 'Release'
       environment: 'dbaverificationscript'
       strategy:
@@ -132,11 +132,11 @@ stages:
                   Write-Host "Auto Generated SQL Update Script:"
                   Get-Content d:\a\1\s\GeneratedOutputFiles\$(databasename)_Script.sql | foreach {Write-Output $_}
   
-- stage: DBAVerificationApply
-  displayName: 'Apply database schema changes'
-  dependsOn: DBAVerificationScript
-  jobs:
-  - deployment: DBAVerificationApply
+  - stage: DBAVerificationApply
+    displayName: 'Apply database schema changes'
+    dependsOn: DBAVerificationScript
+    jobs:
+    - deployment: DBAVerificationApply
       pool:
         vmImage: 'windows-2019'
       variables:
@@ -163,11 +163,11 @@ stages:
                 dacpacFile: '$(Pipeline.Workspace)/dropDacpac/Tailspin.SpaceGame.Database/bin/Debug/Tailspin.SpaceGame.Database.dacpac'
                 ipDetectionMethod: 'AutoDetect'
   
-  - stage: 'Dev'
-    displayName: 'Deploy to the dev environment'
-    dependsOn: DBAVerificationApply
-    jobs:
-    - deployment: Deploy
+    - stage: 'Dev'
+      displayName: 'Deploy to the dev environment'
+      dependsOn: DBAVerificationApply
+      jobs:
+      - deployment: Deploy
       pool:
         vmImage: 'ubuntu-16.04'
       environment: dev
@@ -186,11 +186,11 @@ stages:
                 appName: '$(WebAppNameDev)'
                 package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
   
-  - stage: 'Test'
-    displayName: 'Deploy to the test environment'
-    dependsOn: Dev
-    jobs:
-    - deployment: Deploy
+    - stage: 'Test'
+      displayName: 'Deploy to the test environment'
+      dependsOn: Dev
+      jobs:
+      - deployment: Deploy
       pool:
         vmImage: 'ubuntu-16.04'
       environment: test
@@ -209,12 +209,12 @@ stages:
                 appName: '$(WebAppNameTest)'
                 package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
   
-  - stage: 'Staging'
-    displayName: 'Deploy to the staging environment'
-    dependsOn: Test
-    jobs:
-    - deployment: Deploy
-      pool:
+    - stage: 'Staging'
+      displayName: 'Deploy to the staging environment'
+      dependsOn: Test
+      jobs:
+      - deployment: Deploy
+        pool:
         vmImage: 'ubuntu-16.04'
       environment: staging
       variables:
