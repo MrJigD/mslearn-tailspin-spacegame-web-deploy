@@ -2,7 +2,7 @@ trigger:
   - '*'
 
 variables:
-  buildConfiguration: 'Releasemeskfklsjdlfjsld'
+  buildConfiguration: 'Release'
   
 stages:
   - stage: 'Build'
@@ -192,7 +192,7 @@ stages:
    jobs:
    - deployment: Deploy
      pool:
-      vmImage: 'ubuntu-16.04'
+       vmImage: 'ubuntu-16.04'
      environment: test
      variables:
      - group: 'Release'
