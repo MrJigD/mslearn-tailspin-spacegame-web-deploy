@@ -1,10 +1,10 @@
 trigger:
   - '*'
   
-  variables:
+variables:
     buildConfiguration: 'Release'
   
-  stages:
+stages:
   - stage: 'Build'
     displayName: 'Build the web application'
     jobs: 
@@ -94,11 +94,11 @@ trigger:
           artifactName: dropDacpac
         condition: succeededOrFailed()
   
-  - stage: DBAVerificationScript
+- stage: DBAVerificationScript
     displayName: 'Script database schema changes'
     dependsOn: Build
     jobs:
-    - deployment: DBAVerificationScript
+  - deployment: DBAVerificationScript
       pool:
         vmImage: 'windows-2019'
       variables:
@@ -132,11 +132,11 @@ trigger:
                   Write-Host "Auto Generated SQL Update Script:"
                   Get-Content d:\a\1\s\GeneratedOutputFiles\$(databasename)_Script.sql | foreach {Write-Output $_}
   
-  - stage: DBAVerificationApply
-    displayName: 'Apply database schema changes'
-    dependsOn: DBAVerificationScript
-    jobs:
-    - deployment: DBAVerificationApply
+- stage: DBAVerificationApply
+  displayName: 'Apply database schema changes'
+  dependsOn: DBAVerificationScript
+  jobs:
+  - deployment: DBAVerificationApply
       pool:
         vmImage: 'windows-2019'
       variables:
